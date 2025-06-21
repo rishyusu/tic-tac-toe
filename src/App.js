@@ -5,12 +5,11 @@ import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-quer
 
 const queryClient = new QueryClient();
 
-const fetchGameStatus = () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("This is just a demo fetch using React Query.");
-    }, 500);
-  });
+const fetchGameStatus = async () => {
+  const res = await fetch("https://catfact.ninja/fact");
+  const data = await res.json();
+  return data.fact;
+};
 
 function StatusMessage() {
   const { data, isLoading } = useQuery({
@@ -19,7 +18,7 @@ function StatusMessage() {
   });
   
   if (isLoading) return <p>Loading game status...</p>;
-  return <p>{data}</p>;
+  return <p>Random cat fact: {data}</p>;
 }
 
 function App() {
